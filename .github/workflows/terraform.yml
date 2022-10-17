@@ -16,26 +16,6 @@ env:
   AWS_REGION: "us-east-1"
 
 jobs:
-  # checkout:
-  #  name: "Checkout Terraform code"
-  #  runs-on: ubuntu-22.04
-  #  defaults:
-  #    run:
-  #      working-directory: ${{ github.ref_name }}
-  #  steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v3
-
-  #   - name: Install Tfenv
-  #     run: |
-  #         git clone https://github.com/tfutils/tfenv.git ./tfenv
-
-  #   - name: Persist to workspace
-  #     uses: actions/upload-artifact@v3
-  #     with:
-  #       name: project
-  #       path: ~/project
-
   lint:
     name: "Lint Terraform code"
     runs-on: ubuntu-22.04
@@ -54,8 +34,23 @@ jobs:
 
       - name: "Run linter"
         run: pre-commit run -c .pre-commit-config.yaml --files ./**/*
-    # - name: Terraform Init
-    #   run: |
-    #       ./tfenv/bin/tfenv install $(cat .terraform-version) && \
-    #       ./tfenv/bin/tfenv use $(cat .terraform-version) && \
-    #       ./tfenv/bin/terraform init
+
+  init-and-plan:
+   name: "Terraform init and plan."
+   runs-on: ubuntu-22.04
+   defaults:
+     run:
+       working-directory: ${{ github.ref_name }}
+   steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install Tfenv
+      run: |
+          git clone https://github.com/tfutils/tfenv.git ./tfenv
+
+    - name: Terraform Init
+      run: |
+          ./tfenv/bin/tfenv install $(cat .terraform-version) && \
+          ./tfenv/bin/tfenv use $(cat .terraform-version) && \
+          ./tfenv/bin/terraform init
