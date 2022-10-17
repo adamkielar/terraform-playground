@@ -34,6 +34,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: project
+        path: ~/project
 
   lint:
     name: "Lint Terraform code"
