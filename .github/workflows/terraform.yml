@@ -12,9 +12,12 @@ on:
   workflow_dispatch:
   pull_request:
     
+env:
+  AWS_REGION: "us-east-1"
+
 jobs:
-  terraform:
-   name: "Terraform"
+  checkout:
+   name: "Checkout Terraform code"
    runs-on: ubuntu-22.04
    defaults:
      run:
@@ -27,8 +30,26 @@ jobs:
       run: |
           git clone https://github.com/tfutils/tfenv.git ./tfenv
 
-    - name: Terraform Init
-      run: |
-          ./tfenv/bin/tfenv install $(cat .terraform-version) && \
-          ./tfenv/bin/tfenv use $(cat .terraform-version) && \
-          ./tfenv/bin/terraform init
+    - name: Persist to workspace
+      uses: actions/upload-artifact@v3
+      with:
+        name: project
+
+  lint:
+    name: "Lint Terraform code"
+    needs: checkout
+    runs-on: ubuntu-22.04
+    container: ghcr.io/antonbabenko/pre-commit-terraform:latest
+    steps:
+      - name: "Attach workspace"
+        uses: actions/download-artifact@v3
+        with:
+          name:  project
+
+      - name: "Run linter"
+        run: pre-commit run -av --show-diff-on-failure
+    # - name: Terraform Init
+    #   run: |
+    #       ./tfenv/bin/tfenv install $(cat .terraform-version) && \
+    #       ./tfenv/bin/tfenv use $(cat .terraform-version) && \
+    #       ./tfenv/bin/terraform init
