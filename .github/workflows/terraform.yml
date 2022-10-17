@@ -53,7 +53,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: "Run linter"
-        run: pre-commit run -av --show-diff-on-failure
+        run: pre-commit run -c .pre-commit-config.yaml --files ./**/*
     # - name: Terraform Init
     #   run: |
     #       ./tfenv/bin/tfenv install $(cat .terraform-version) && \

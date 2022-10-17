@@ -2,10 +2,10 @@ resource "aws_instance" "instance_1" {
   depends_on = [
     aws_security_group.instances
   ]
-  ami             = "ami-d74be5b8"
-  instance_type   = "t2.micro"
-  subnet_id = module.vpc.private_subnets[0]
-  user_data       = <<-EOF
+  ami           = "ami-d74be5b8"
+  instance_type = "t2.micro"
+  subnet_id     = module.vpc.private_subnets[0]
+  user_data     = <<-EOF
           #!bin/bash
           echo "Hello, World 1 > index.html
           python3 -m http.server 8000 &
@@ -16,10 +16,10 @@ resource "aws_instance" "instance_2" {
   depends_on = [
     aws_security_group.instances
   ]
-  ami             = "ami-d74be5b8"
-  instance_type   = "t2.micro"
-  subnet_id = module.vpc.private_subnets[0]
-  user_data       = <<-EOF
+  ami           = "ami-d74be5b8"
+  instance_type = "t2.micro"
+  subnet_id     = module.vpc.private_subnets[0]
+  user_data     = <<-EOF
           #!bin/bash
           echo "Hello, World 2 > index.html
           python3 -m http.server 8000 &
@@ -27,13 +27,13 @@ resource "aws_instance" "instance_2" {
 }
 
 module "s3_bucket" {
-  source            = "terraform-aws-modules/s3-bucket/aws"
+  source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.4.0"
-  bucket            = format("devops-directive-web-app-data-%s", random_string.www_bucket.id)
+  bucket  = format("devops-directive-web-app-data-%s", random_string.www_bucket.id)
   versioning = {
     enabled = true
   }
-  force_destroy     = true
+  force_destroy = true
 
   server_side_encryption_configuration = {
     rule = {
@@ -57,19 +57,19 @@ locals {
 }
 
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+  source  = "terraform-aws-modules/vpc/aws"
   version = "3.16.1"
 
-  name = "test-vpc"
-  cidr = "11.0.0.0/16"
-  create_vpc = true
-  azs = [ "${local.region}a" ]
-  private_subnets = ["11.0.1.0/24"]
+  name               = "test-vpc"
+  cidr               = "11.0.0.0/16"
+  create_vpc         = true
+  azs                = ["${local.region}a"]
+  private_subnets    = ["11.0.1.0/24"]
   enable_vpn_gateway = true
-  
+
 }
 
 resource "aws_security_group" "instances" {
-  name = "instance-security-group"
+  name   = "instance-security-group"
   vpc_id = module.vpc.vpc_id
 }
