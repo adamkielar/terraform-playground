@@ -16,25 +16,25 @@ env:
   AWS_REGION: "us-east-1"
 
 jobs:
-  checkout:
-   name: "Checkout Terraform code"
-   runs-on: ubuntu-22.04
-   defaults:
-     run:
-       working-directory: ${{ github.ref_name }}
-   steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+  # checkout:
+  #  name: "Checkout Terraform code"
+  #  runs-on: ubuntu-22.04
+  #  defaults:
+  #    run:
+  #      working-directory: ${{ github.ref_name }}
+  #  steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v3
 
-    - name: Install Tfenv
-      run: |
-          git clone https://github.com/tfutils/tfenv.git ./tfenv
+  #   - name: Install Tfenv
+  #     run: |
+  #         git clone https://github.com/tfutils/tfenv.git ./tfenv
 
-    - name: Persist to workspace
-      uses: actions/upload-artifact@v3
-      with:
-        name: project
-        path: ~/project
+  #   - name: Persist to workspace
+  #     uses: actions/upload-artifact@v3
+  #     with:
+  #       name: project
+  #       path: ~/project
 
   lint:
     name: "Lint Terraform code"
@@ -42,10 +42,8 @@ jobs:
     runs-on: ubuntu-22.04
     container: ghcr.io/antonbabenko/pre-commit-terraform:latest
     steps:
-      - name: "Attach workspace"
-        uses: actions/download-artifact@v3
-        with:
-          name:  project
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: "Run linter"
         run: pre-commit run -av --show-diff-on-failure
