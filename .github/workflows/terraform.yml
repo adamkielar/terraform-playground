@@ -20,20 +20,28 @@ jobs:
     name: "Lint Terraform code"
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout source code
+        uses: actions/checkout@v2
 
-      - name: "Setup python"
-        uses: actions/setup-python@v4
+      - name: Cache plugin dir
+        uses: actions/cache@v2
         with:
-          python-version: '3.10'
-          cache: pip
+          path: ~/.tflint.d/plugins
+          key: tflint-${{ hashFiles('.tflint.hcl') }}
 
-      - name: "Install pre-commit"
-        run: pip install -r requirements.txt
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v2
+        with:
+          tflint_version: v0.38.1
 
-      - name: "Run linter"
-        run: pre-commit run -c .pre-commit-config.yaml --files ./**/*
+      - name: Show version
+        run: tflint --version
+
+      - name: Init TFLint
+        run: tflint --init
+
+      - name: Run TFLint
+        run: tflint -f compact
 
   init-and-plan:
    name: "Terraform init and plan."
