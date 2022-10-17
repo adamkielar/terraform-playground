@@ -1,6 +1,6 @@
 name: "Terraform infrastructure deployment"
 concurrency:
-  group: infrastructure
+  group: ${{ github.workflow }}-${{ github.ref }}
 
 on:
   push:
@@ -17,11 +17,13 @@ env:
 
 jobs:
   lint:
-    name: "Lint Terraform code"
+    name: "Lint terraform code"
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
 
       - name: Cache plugin dir
         uses: actions/cache@v2
@@ -34,31 +36,50 @@ jobs:
         with:
           tflint_version: v0.38.1
 
-      - name: Show version
-        run: tflint --version
-
       - name: Init TFLint
         run: tflint --init
 
       - name: Run TFLint
         run: tflint -f compact
 
-  init-and-plan:
-   name: "Terraform init and plan."
+  tfsec:
+    name: "Tfsec terraform code"
+    runs-on: ubuntu-22.04
+    needs: lint
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Run Tfsec
+        uses: aquasecurity/tfsec-pr-commenter-action@v1.2.0
+        with:
+          tfsec_args: --soft-fail
+          github_token: ${{ github.token }}
+
+  terraform:
+   name: "Terraform"
    runs-on: ubuntu-22.04
+   needs: lint
    defaults:
      run:
        working-directory: ${{ github.ref_name }}
    steps:
     - name: Checkout
       uses: actions/checkout@v3
+      with:
+          persist-credentials: false
 
-    - name: Install Tfenv
-      run: |
-          git clone https://github.com/tfutils/tfenv.git ./tfenv
+    - name: Set terraform version env
+      run: echo "TF_VERSION=$(cat .terraform-version)" >> $GITHUB_ENV
 
-    - name: Terraform Init
-      run: |
-          ./tfenv/bin/tfenv install $(cat .terraform-version) && \
-          ./tfenv/bin/tfenv use $(cat .terraform-version) && \
-          ./tfenv/bin/terraform init
+    - name: Setup terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ env.TF_VERSION }}
