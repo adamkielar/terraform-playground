@@ -70,7 +70,7 @@ jobs:
    environment: ${{ github.ref_name }}
    permissions:
       id-token: write
-      contents: read 
+      contents: write
    defaults:
      run:
        working-directory: ${{ github.ref_name }}
@@ -86,7 +86,6 @@ jobs:
       with:
         aws-region: ${{ env.AWS_REGION }}
         role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-        role-duration-seconds: 1200
         role-session-name: Sandbox
 
     - name: Set terraform version env
