@@ -6,9 +6,10 @@ resource "aws_iam_openid_connect_provider" "github" {
 }
 
 data "aws_iam_policy_document" "github_actions_assume_role" {
+  version = "2008-10-17"
   statement {
+    sid = null
     actions = ["sts:AssumeRoleWithWebIdentity"]
-
     principals {
       type = "Federated"
       identifiers = [
@@ -16,11 +17,11 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
         ]
     }
 
-    condition {
-      test = "StringEquals"
-      variable = "token.actions.githubusercontent.com:aud"
-      values = ["sts.amazonaws.com"]
-    }
+    # condition {
+    #   test = "StringEquals"
+    #   variable = "token.actions.githubusercontent.com:aud"
+    #   values = ["sts.amazonaws.com"]
+    # }
 
     condition {
       test = "StringLike"
