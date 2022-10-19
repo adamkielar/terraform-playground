@@ -45,7 +45,7 @@ resource "aws_iam_policy" "gh-s3" {
 
 data "aws_iam_policy_document" "gh-dynamodb" {
   statement {
-
+    sid = "SpecificTable"
     effect = "Allow"
     actions = [
       "dynamodb:GetItem",
@@ -53,7 +53,7 @@ data "aws_iam_policy_document" "gh-dynamodb" {
     ]
 
     resources = [
-      "arn:aws:dynamodb:::table/terraform-locks-2a085ee2c5",
+      "arn:aws:dynamodb:*:*:table/terraform-locks-2a085ee2c5",
     ]
   }
 }
