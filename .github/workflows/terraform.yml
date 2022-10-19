@@ -67,7 +67,6 @@ jobs:
   terraform:
    name: "Terraform"
    runs-on: ubuntu-22.04
-   needs: lint
    environment: ${{ github.ref_name }}
    permissions:
       id-token: write
