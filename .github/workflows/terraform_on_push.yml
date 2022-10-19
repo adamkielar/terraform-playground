@@ -63,11 +63,12 @@ jobs:
 
     - name: Terraform Plan
       id: plan
-      run: terraform plan -input=false -out=tfplan -var-file=terraform.${{ github.ref_name }}.tfvars
+      run: terraform plan -input=false -var-file=terraform.${{ github.ref_name }}.tfvars
+      continue-on-error: true
 
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
       run: exit 1
 
     - name: Terraform Apply
-      run: terraform apply -auto-approve -input=false -var-file=terraform.${{ github.ref_name }}.tfvars tfplan
+      run: terraform apply -auto-approve -input=false -var-file=terraform.${{ github.ref_name }}.tfvars

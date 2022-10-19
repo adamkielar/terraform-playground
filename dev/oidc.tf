@@ -7,7 +7,7 @@ module "github-actions-oidc" {
   oidc_url        = var.oidc_url
   oidc_client_id  = var.oidc_client_id
   oidc_thumbprint = var.oidc_thumbprint
-  role_name = var.role_name
+  role_name       = var.role_name
 
   iam_role_permissions_boundary = var.iam_role_permissions_boundary
   project_repository_condition  = var.project_repository_condition
@@ -45,7 +45,7 @@ resource "aws_iam_policy" "gh-s3" {
 
 data "aws_iam_policy_document" "gh-dynamodb" {
   statement {
-    sid = "SpecificTable"
+    sid    = "SpecificTable"
     effect = "Allow"
     actions = [
       "dynamodb:GetItem",

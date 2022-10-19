@@ -28,15 +28,3 @@ variable "project_repository_condition" {
   description = ""
   type        = string
 }
-
-variable "policy_arns" {
-  description = "A list of policy ARNs to attach the role"
-  type        = list(string)
-  default     = []
-}
-
-variable "default_tags" {
-  description = "Default tags for AWS resources"
-  type        = map(string)
-  default     = {}
-}
