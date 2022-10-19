@@ -65,5 +65,9 @@ jobs:
       id: plan
       run: terraform plan -input=false -out=tfplan -var-file=terraform.${{ github.ref_name }}.tfvars
 
+    - name: Terraform Plan Status
+      if: steps.plan.outcome == 'failure'
+      run: exit 1
+
     - name: Terraform Apply
       run: terraform apply -auto-approve -input=false -var-file=terraform.${{ github.ref_name }}.tfvars tfplan
