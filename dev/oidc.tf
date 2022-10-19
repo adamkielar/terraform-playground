@@ -50,6 +50,7 @@ data "aws_iam_policy_document" "gh-dynamodb" {
     actions = [
       "dynamodb:GetItem",
       "dynamodb:PutItem",
+      "dynamodb:DeleteItem",
     ]
 
     resources = [
