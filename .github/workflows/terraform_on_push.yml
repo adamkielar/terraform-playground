@@ -1,0 +1,69 @@
+name: "Terraform infrastructure deployment on push to branch: dev, staging, production"
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+on:
+  push:
+    branches:
+      - dev
+      - staging
+      - production
+  
+  workflow_dispatch:
+    
+env:
+  AWS_REGION: "eu-central-1"
+
+jobs:
+  terraform:
+   name: "Terraform"
+   runs-on: ubuntu-22.04
+   environment: ${{ github.ref_name }}
+   permissions:
+      id-token: write
+      contents: read
+   defaults:
+     run:
+       working-directory: ${{ github.ref_name }}
+   steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # We use OIDC for best practice setup
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1-node16
+      with:
+        aws-region: ${{ env.AWS_REGION }}
+        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+        role-session-name: gh-${{ github.ref_name }}
+
+    - name: Verify AWS credentials
+      run: aws sts get-caller-identity
+
+    - name: Set terraform version env
+      run: echo "TF_VERSION=$(cat .terraform-version)" >> $GITHUB_ENV
+
+    - name: Setup terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ env.TF_VERSION }}
+
+    - name: Terraform Format
+      id: fmt
+      run: terraform fmt -check
+      continue-on-error: true
+
+    - name: Terraform Init
+      id: init
+      run: terraform init
+
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -input=false -out=tfplan -var-file=terraform.${{ github.ref_name }}.tfvars
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve -input=false -var-file=terraform.${{ github.ref_name }}.tfvars tfplan

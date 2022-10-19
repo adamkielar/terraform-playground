@@ -1,16 +1,14 @@
-name: "Terraform infrastructure deployment"
+name: "Terraform infrastructure pre merge checks"
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 
 on:
-  push:
+  workflow_dispatch:
+  pull_request_target:
     branches:
       - dev
       - staging
       - production
-  
-  workflow_dispatch:
-  pull_request:
     
 env:
   AWS_REGION: "eu-central-1"
@@ -19,7 +17,6 @@ jobs:
   lint:
     name: "Lint terraform code"
     runs-on: ubuntu-22.04
-    if: github.event_name == 'pull_request'
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -47,7 +44,6 @@ jobs:
     name: "Tfsec terraform code"
     runs-on: ubuntu-22.04
     needs: lint
-    if: github.event_name == 'pull_request'
     permissions:
       contents: read
       pull-requests: write
@@ -67,13 +63,13 @@ jobs:
   terraform:
    name: "Terraform"
    runs-on: ubuntu-22.04
-   environment: ${{ github.ref_name }}
+   environment: ${{ github.base_ref }}
    permissions:
       id-token: write
       contents: read
    defaults:
      run:
-       working-directory: ${{ github.ref_name }}
+       working-directory: ${{ github.base_ref }}
    steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -112,13 +108,11 @@ jobs:
 
     - name: Terraform Plan
       id: plan
-      if: github.event_name == 'pull_request'
       run: terraform plan -no-color -input=false -var-file=terraform.${{ github.ref_name }}.tfvars
       continue-on-error: true
 
     - name: Update Pull Request
       uses: actions/github-script@v6
-      if: github.event_name == 'pull_request'
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
       with:
@@ -145,10 +139,3 @@ jobs:
             repo: context.repo.repo,
             body: output
           })
-
-    - name: Terraform Plan Status
-      if: steps.plan.outcome == 'failure'
-      run: exit 1
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve -input=false -var-file=terraform.${{ github.ref_name }}.tfvars
