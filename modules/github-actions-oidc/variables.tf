@@ -1,5 +1,5 @@
 variable "role_name" {
-  description = "Test webhook v10"
+  description = "Test webhook v11"
   type        = string
 }
 
@@ -32,7 +32,7 @@ variable "project_repository_condition" {
 variable "policy_arns" {
   description = "A list of policy ARNs to attach the role"
   type        = list(string)
-  default     = []
+  default     = {}
 }
 
 variable "default_tags" {
