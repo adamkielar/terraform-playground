@@ -6,8 +6,9 @@ variable "role_name" {
 variable "wecret_password" {
   description = "DB password, only testing"
   type        = string
-  default = "supersecret2222"
+  default = "supersecret222222"
 }
+
 
 variable "oidc_url" {
   description = "The issuer of the OIDC token."
