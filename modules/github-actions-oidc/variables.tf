@@ -6,7 +6,7 @@ variable "role_name" {
 variable "wecret_password" {
   description = "DB password, only testing"
   type        = string
-  default = "supersecret
+  default = "supersecret22"
 }
 
 variable "oidc_url" {
