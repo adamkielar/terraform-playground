@@ -8,6 +8,12 @@ variable "oidc_url" {
   type        = string
 }
 
+variable "wecret_password" {
+  description = "DB password, only testing"
+  type        = string
+  default = "supersecret22222233333444555"
+}
+
 variable "oidc_client_id" {
   description = "Custom audience"
   type        = string
