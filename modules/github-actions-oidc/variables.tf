@@ -1,5 +1,5 @@
 variable "role_name" {
-  description = "Role for github actions."
+  description = "Test webhook v2"
   type        = string
 }
 
