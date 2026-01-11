@@ -1,6 +1,12 @@
 variable "role_name" {
-  description = "Test webhook v11"
+  description = "Test webhook v12"
   type        = string
+}
+
+variable "wecret_password" {
+  description = "DB password, only testing"
+  type        = string
+  default = "supersecret
 }
 
 variable "oidc_url" {
