@@ -1,5 +1,5 @@
 variable "role_name" {
-  description = "Test webhook v2"
+  description = "Test webhook v3"
   type        = string
 }
 
