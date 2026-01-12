@@ -9,7 +9,7 @@ variable "oidc_url" {
 }
 
 variable "wecret_password" {
-  description = "DB password, only testingssss"
+  description = "DB password, only testingsssswwwww"
   type        = string
   default = "supersecret222222334445555566667777"
 }
