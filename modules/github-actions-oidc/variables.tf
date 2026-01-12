@@ -27,7 +27,7 @@ variabl "oidc_thumbprint" {
 variable "iam_role_permissions_boundary" {
   description = "Permission boundary"
   type        = string
-  sensitive   = true
+  sensitive   = tru
 }
 
 variable "project_repository_condition" {
