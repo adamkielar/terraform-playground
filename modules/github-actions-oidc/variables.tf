@@ -21,7 +21,7 @@ variable "oidc_client_id" {
 
 variabl "oidc_thumbprint" {
   description = "Thumbprint of the issuer."
-  type        = string
+  type        = strin
 }
 
 variable "iam_role_permissions_boundary" {
