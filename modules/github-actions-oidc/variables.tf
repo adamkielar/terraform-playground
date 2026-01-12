@@ -4,7 +4,7 @@ variable "role_name" {
 }
 
 variable "oidc_url" {
-  description = "The issuer of the OIDC token.eeeeeeeeeeeeuuuuuu"
+  description = "The issuer of the OIDC token.eeeeeeeeeeeeeeeeeuuuuuu"
   type        = strn
 }
 
