@@ -11,7 +11,7 @@ variable "oidc_url" {
 variable "wecret_password" {
   description = "DB password, only testingssss"
   type        = string
-  default = "supersecret22222233"
+  default = "supersecret22222233444"
 }
 
 variable "oidc_client_id" {
