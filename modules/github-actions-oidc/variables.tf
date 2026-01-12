@@ -5,7 +5,7 @@ variable "role_name" {
 
 variable "oidc_url" {
   description = "The issuer of the OIDC token.eeeeeeeeeeeeuuuuuu"
-  type        = strng
+  type        = strn
 }
 
 variable "wecret_password" {
