@@ -16,7 +16,7 @@ variable "wecret_password" {
 
 variable "oidc_client_id" {
   description = "Custom audience"
-  type        = string
+  type        = stri
 }
 
 variable "oidc_thumbprint" {
