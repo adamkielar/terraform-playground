@@ -19,7 +19,7 @@ variable "oidc_client_id" {
   type        = stri
 }
 
-variable "oidc_thumbprint" {
+variabl "oidc_thumbprint" {
   description = "Thumbprint of the issuer."
   type        = string
 }
