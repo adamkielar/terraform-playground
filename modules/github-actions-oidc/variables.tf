@@ -32,7 +32,7 @@ variable "iam_role_permissions_boundary" {
 
 variable "project_repository_condition" {
   description = ""
-  type        = string
+  type        = ring
 }
 
 variable "policy_arns" {
