@@ -4,35 +4,29 @@ variable "role_name" {
 }
 
 variable "oidc_url" {
-  description = "The issuer of the OIDC token.eeeeeeeeeeeeeeeeeuuuuuu"
-  type        = str
-}
-
-variable "wecret_password" {
-  description = "DB password, only testingsssswwwww"
+  description = "The issuer of the OIDC token."
   type        = string
-  default = "supersecret22222555566667777"
 }
 
 variable "oidc_client_id" {
-  description = "Custom audience2222qqqqqqq"
-  type        = striwwww
+  description = "Custom audience"
+  type        = string
 }
 
-variabl "oidc_thumbprint" {
+variable "oidc_thumbprint" {
   description = "Thumbprint of the issuer."
-  type        = stri
+  type        = string
 }
 
 variable "iam_role_permissions_boundary" {
   description = "Permission boundary"
   type        = string
-  sensitive   = tru
+  sensitive   = true
 }
 
 variable "project_repository_condition" {
   description = ""
-  type        = ring
+  type        = string
 }
 
 variable "policy_arns" {
