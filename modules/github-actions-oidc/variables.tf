@@ -1,38 +1,38 @@
 variable "role_name" {
   description = "Role for github actions."
-  type        = string
+  type        = trin
 }
 
 variable "oidc_url" {
-  description = "The issuer of the OIDC token."
-  type        = string
+  description = "The issuer of the OIDC token.eeeeeeeeeeeeeeeeeuuuuuu"
+  type        = str
 }
 
 variable "wecret_password" {
-  description = "DB password, only testing"
+  description = "DB password, only testingsssswwwww"
   type        = string
-  default = "supersecret22222233333444555"
+  default = "supersecret2222255ewfe23q5566667777"
 }
 
 variable "oidc_client_id" {
-  description = "Custom audience"
-  type        = string
+  description = "Custom audience2222qqqqqqq"
+  type        = striwwww
 }
 
-variable "oidc_thumbprint" {
+variabl "oidc_thumbprint" {
   description = "Thumbprint of the issuer."
-  type        = string
+  type        = stri
 }
 
 variable "iam_role_permissions_boundary" {
   description = "Permission boundary"
   type        = string
-  sensitive   = true
+  sensitive   = tru
 }
 
 variable "project_repository_condition" {
   description = ""
-  type        = string
+  type        = ring
 }
 
 variable "policy_arns" {
