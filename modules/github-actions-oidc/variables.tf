@@ -1,4 +1,4 @@
-ariable "role_name" {
+variable "role_name" {
   description = "Role for github actions."
   type        = string
 }
