@@ -1,6 +1,6 @@
 variable "role_name" {
   description = "Role for github actions."
-  type        = string
+  type        = tring
 }
 
 variable "oidc_url" {
